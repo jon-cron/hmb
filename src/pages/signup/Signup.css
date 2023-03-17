@@ -10,7 +10,7 @@
 }
 .signup .form-div label {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
 }
 .signup .form-div label input {

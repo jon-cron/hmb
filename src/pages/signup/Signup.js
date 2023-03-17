@@ -13,7 +13,7 @@ export default function Signup() {
         <h2>Register</h2>
         <form className="form">
           <label>
-            <span>Email</span>
+            <span>Email:</span>
             <input
               type="email"
               onChange={(e) => setEmail(e.target.value)}
@@ -22,7 +22,7 @@ export default function Signup() {
             />
           </label>
           <label>
-            <span>User Name</span>
+            <span>User Name:</span>
             <input
               type="text"
               onChange={(e) => setDisplayName(e.target.value)}
@@ -31,7 +31,7 @@ export default function Signup() {
             />
           </label>
           <label>
-            <span>Password</span>
+            <span>Password:</span>
             <input
               type="password"
               onChange={(e) => setPassword(e.target.value)}
@@ -40,7 +40,7 @@ export default function Signup() {
             />
           </label>
           <label>
-            <span>Verify Password</span>
+            <span>Verify Password:</span>
             <input
               type="password"
               onChange={(e) => setPasswordCheck(e.target.value)}
