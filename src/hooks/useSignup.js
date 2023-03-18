@@ -3,7 +3,7 @@ import { auth, storage, db } from "../firebase/config.js";
 import { collection, addDoc } from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useAuthContext } from "./useAuthContext.js";
-const useSignup = () => {
+export const useSignup = () => {
   const [error, setError] = useState(null);
   const [isCancelled, setIsCancelled] = useState(false);
   const [isPending, setIsPending] = useState(false);
