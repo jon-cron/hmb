@@ -20,25 +20,26 @@ export const useSignup = () => {
       if (!res) {
         throw new Error("Could not register");
       }
+      const uploadPath = `profileImgs/${res.user.uid}/${profileImg.name}`;
       //make storage upload path for image
-      const uploadRef = ref(
-        storage,
-        `profileImgs/${res.user.uid}/${profileImg.name}`
-      );
+      const uploadRef = ref(storage, uploadPath);
+      console.log("file path", uploadRef);
       //get a ref for the uploaded img
-      uploadBytesResumable(uploadRef, profileImg);
+      const img = uploadBytesResumable(uploadRef, profileImg);
+      console.log("getdownloadURL", img);
       //get download url for db
-      const imgPath = getDownloadURL(uploadRef);
+      const imgUrl = getDownloadURL(uploadRef);
+      console.log("getdownloadURL", imgUrl);
       updateProfile(auth.currentUser, {
         displayName: displayName,
-        photoURL: imgPath,
+        photoURL: imgUrl,
       });
       //attach other categories to our user
       const usersRef = collection(db, "users");
       await addDoc(usersRef, {
         id: res.user.uid,
         profileName: displayName,
-        photoURL: imgPath,
+        photoURL: imgUrl,
       });
       dispatch({ type: "LOGIN", payload: res.user });
       if (!isCancelled) {
