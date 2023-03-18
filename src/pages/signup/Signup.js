@@ -1,8 +1,9 @@
 import "./Signup.css";
-
+import { signup } from "../../hooks/useSignup.js";
 import { useState } from "react";
 
 export default function Signup() {
+  const { error, isPending, signup } = useSignup;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
@@ -34,6 +35,7 @@ export default function Signup() {
     if (password != passwordCheck) {
       return;
     }
+    signup(email, password, displayName, profileImg);
   };
   return (
     <div className="signup">
