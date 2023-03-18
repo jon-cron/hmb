@@ -1,0 +1,36 @@
+.login {
+  background: #ffffff;
+  max-width: 600px;
+  margin: auto;
+  border-radius: 8px;
+}
+.signup .form-div {
+  padding: 30px 20px;
+  border-radius: 8px;
+}
+.signup .form-div label {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.signup .form-div label input {
+  max-width: 400px;
+}
+.signup .form-div label span {
+  padding-right: 5px;
+}
+.signup .form-div .btn-div {
+  justify-content: space-evenly;
+  display: flex;
+}
+.signup .form-div .btn-div button {
+  height: 40px;
+  width: 80px;
+  font-size: 0.8em;
+  color: #333;
+  font-weight: bold;
+  border-radius: 5px;
+  border: 1px solid #333;
+  background: #28b886;
+  cursor: pointer;
+}
