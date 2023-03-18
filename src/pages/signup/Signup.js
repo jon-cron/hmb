@@ -1,8 +1,12 @@
 import "./Signup.css";
 import { useSignup } from "../../hooks/useSignup.js";
 import { useState } from "react";
+import { useAuthContext } from "../../hooks/useAuthContext.js";
+import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
+  const { user } = useAuthContext();
+  const navigate = useNavigate();
   const { error, isPending, signup } = useSignup();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,6 +40,9 @@ export default function Signup() {
       return;
     }
     signup(email, password, displayName, profileImg);
+    if (user) {
+      navigate("/");
+    }
   };
   return (
     <div className="signup">

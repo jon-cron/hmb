@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { auth, storage, db } from "../firebase/config.js";
 import { collection, addDoc } from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { ref, uploadBytesResumable } from "firebase/storage";
 import { useAuthContext } from "./useAuthContext.js";
 export const useSignup = () => {
   const [error, setError] = useState(null);
@@ -20,17 +21,19 @@ export const useSignup = () => {
         throw new Error("Could not register");
       }
       //make storage upload path for image
-      const uploadPath = `profileImgs/${res.user.uid}/${profileImg.name}`;
+      const uploadRef = ref(
+        storage,
+        `profileImgs/${res.user.uid}/${profileImg.name}`
+      );
       //get a ref for the uploaded img
-      const img = await storage.ref(uploadPath).put(profileImg);
+      uploadBytesResumable(uploadRef, profileImg);
       //get download url for db
-      const imgUrl = await img.ref.getDownloadURL();
+      const imgUrl = uploadRef.fullPath;
       //attach other categories to our user
-      await res.user.updateProfile({ displayName, photoURL: imgUrl });
       const usersRef = collection(db, "users");
       const userInfo = await addDoc(usersRef, {
         id: res.user.uid,
-        displayName,
+        profileName: displayName,
         photoURL: imgUrl,
       });
       dispatch({ type: "LOGIN", payload: userInfo });
