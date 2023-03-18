@@ -1,15 +1,23 @@
 import "./Login.css";
-
+import { useLogin } from "../../hooks/useLogin.js";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function () {
+  const navigate = useNavigate();
+  const { error, login } = useLogin();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    login(email, password);
+    // navigate("/");
+  };
   return (
     <div className="login">
       <div className="form-div">
         <h2>Login</h2>
-        <form className="form">
+        <form onSubmit={handleSubmit} className="form">
           <label>
             <span>Email:</span>
             <input
@@ -29,10 +37,8 @@ export default function () {
               required
             />
           </label>
-
           <div className="btn-div">
-            <button>Submit</button>
-            <button>Submit</button>
+            <button>Login</button>
           </div>
         </form>
       </div>

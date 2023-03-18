@@ -2,11 +2,19 @@
 import "./Navbar.css";
 //react
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 //context
 import { useAuthContext } from "../../hooks/useAuthContext.js";
+import { useLogout } from "../../hooks/useLogout.js";
 export default function Navbar() {
+  const navigate = useNavigate();
+  const { logout } = useLogout();
   const { user } = useAuthContext();
+
+  const handleClick = () => {
+    logout();
+    navigate("/login");
+  };
   return (
     <div className="navbar">
       {user ? (
@@ -30,7 +38,9 @@ export default function Navbar() {
           )}
           {user && (
             <li>
-              <button className="logout-btn">Logout</button>
+              <button onClick={handleClick} className="logout-btn">
+                Logout
+              </button>
             </li>
           )}
         </ul>
