@@ -23,13 +23,13 @@ export const useSignup = () => {
       const uploadPath = `profileImgs/${res.user.uid}/${profileImg.name}`;
       //make storage upload path for image
       const uploadRef = ref(storage, uploadPath);
-      console.log("file path", uploadRef);
+      console.log("uploadRef", uploadRef);
       //get a ref for the uploaded img
-      const img = uploadBytesResumable(uploadRef, profileImg);
-      console.log("getdownloadURL", img);
+      const img = await uploadBytesResumable(uploadRef, profileImg);
+      console.log("img", img);
       //get download url for db
-      const imgUrl = getDownloadURL(uploadRef);
-      console.log("getdownloadURL", imgUrl);
+      const imgUrl = await getDownloadURL(uploadPath.ref());
+      console.log("imgUrl", imgUrl);
       updateProfile(auth.currentUser, {
         displayName: displayName,
         photoURL: imgUrl,
