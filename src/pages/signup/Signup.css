@@ -33,4 +33,16 @@
   border: 1px solid #333;
   background: #28b886;
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+.signup .form-div .btn-div .reset {
+  background: #ffffff;
+  cursor: pointer;
+}
+.signup .form-div .btn-div .reset:hover {
+  background: #c52c2c;
+}
+.signup .form-div .btn-div .signup-btn:hover {
+  color: #ffffff;
+  border: 1px solid #ffffff;
 }

@@ -29,11 +29,17 @@ export default function Signup() {
     setProfileImg(selected);
     console.log(profileImg);
   };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (password != passwordCheck) {
+      return;
+    }
+  };
   return (
     <div className="signup">
       <div className="form-div">
         <h2>Register</h2>
-        <form className="form">
+        <form className="form" onSubmit={handleSubmit}>
           <label>
             <span>Email:</span>
             <input
@@ -47,6 +53,7 @@ export default function Signup() {
             <span>User Name:</span>
             <input
               type="text"
+              minLength={3}
               onChange={(e) => setDisplayName(e.target.value)}
               value={displayName}
               required
@@ -61,6 +68,7 @@ export default function Signup() {
             <span>Password:</span>
             <input
               type="password"
+              minLength={8}
               onChange={(e) => setPassword(e.target.value)}
               value={password}
               required
@@ -70,14 +78,21 @@ export default function Signup() {
             <span>Verify Password:</span>
             <input
               type="password"
+              minLength={8}
               onChange={(e) => setPasswordCheck(e.target.value)}
               value={passwordCheck}
               required
             />
           </label>
+          {password != passwordCheck && passwordCheck.length > 7 && (
+            <p className="error">Does not match password</p>
+          )}
           <div className="btn-div">
-            <button>Submit</button>
-            <button>Submit</button>
+            <button className="reset" type="button">
+              Reset
+            </button>
+
+            <button className="signup-btn">Submit</button>
           </div>
         </form>
       </div>
