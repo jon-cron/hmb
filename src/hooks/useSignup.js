@@ -25,9 +25,11 @@ export const useSignup = () => {
       const uploadRef = ref(storage, uploadPath);
       console.log("uploadRef", uploadRef);
       //get a ref for the uploaded img
+      // NOTE this is working!!!!
       const img = await uploadBytesResumable(uploadRef, profileImg);
       console.log("img", img);
       //get download url for db
+      // FIXME unable to retrieve downloadURL right here!
       const imgUrl = await getDownloadURL(uploadPath.ref());
       console.log("imgUrl", imgUrl);
       updateProfile(auth.currentUser, {
