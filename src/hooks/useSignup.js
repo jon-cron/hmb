@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { auth, storage, db } from "../firebase/config.js";
 import { collection, addDoc } from "firebase/firestore";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { ref, uploadBytesResumable } from "firebase/storage";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { useAuthContext } from "./useAuthContext.js";
 export const useSignup = () => {
   const [error, setError] = useState(null);
@@ -28,15 +28,19 @@ export const useSignup = () => {
       //get a ref for the uploaded img
       uploadBytesResumable(uploadRef, profileImg);
       //get download url for db
-      const imgUrl = uploadRef.fullPath;
+      const imgPath = getDownloadURL(uploadRef);
+      updateProfile(auth.currentUser, {
+        displayName: displayName,
+        photoURL: imgPath,
+      });
       //attach other categories to our user
       const usersRef = collection(db, "users");
-      const userInfo = await addDoc(usersRef, {
+      await addDoc(usersRef, {
         id: res.user.uid,
         profileName: displayName,
-        photoURL: imgUrl,
+        photoURL: imgPath,
       });
-      dispatch({ type: "LOGIN", payload: userInfo });
+      dispatch({ type: "LOGIN", payload: res.user });
       if (!isCancelled) {
         setIsPending(false);
         setError(null);
