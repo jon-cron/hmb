@@ -6,9 +6,9 @@ export default function () {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   return (
-    <div className="signup">
+    <div className="login">
       <div className="form-div">
-        <h2>Register</h2>
+        <h2>Login</h2>
         <form className="form">
           <label>
             <span>Email:</span>

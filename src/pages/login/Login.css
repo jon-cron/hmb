@@ -4,26 +4,26 @@
   margin: auto;
   border-radius: 8px;
 }
-.signup .form-div {
+.login .form-div {
   padding: 30px 20px;
   border-radius: 8px;
 }
-.signup .form-div label {
+.login .form-div label {
   display: flex;
   justify-content: flex-end;
   align-items: center;
 }
-.signup .form-div label input {
+.login .form-div label input {
   max-width: 400px;
 }
-.signup .form-div label span {
+.login .form-div label span {
   padding-right: 5px;
 }
-.signup .form-div .btn-div {
+.login .form-div .btn-div {
   justify-content: space-evenly;
   display: flex;
 }
-.signup .form-div .btn-div button {
+.login .form-div .btn-div button {
   height: 40px;
   width: 80px;
   font-size: 0.8em;

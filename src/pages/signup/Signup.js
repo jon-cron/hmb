@@ -7,6 +7,28 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [passwordCheck, setPasswordCheck] = useState("");
+  const [profileImg, setProfileImg] = useState(null);
+  const [profileImgError, setProfileImgError] = useState(null);
+  const handleImg = (e) => {
+    setProfileImg(null);
+    setProfileImgError(null);
+    let selected = e.target.files[0];
+    if (!selected) {
+      setProfileImgError("Please select a file");
+      return;
+    }
+    if (!selected.type.includes("image")) {
+      setProfileImgError("Please select an image file");
+      return;
+    }
+    if (selected.size > 100000) {
+      setProfileImgError("File size too larger");
+      return;
+    }
+    setProfileImgError(null);
+    setProfileImg(selected);
+    console.log(profileImg);
+  };
   return (
     <div className="signup">
       <div className="form-div">
@@ -30,6 +52,11 @@ export default function Signup() {
               required
             />
           </label>
+          <label>
+            <span>Profile Image:</span>
+            <input type="file" onChange={handleImg} required />
+          </label>
+          {profileImgError && <p>{profileImgError}</p>}
           <label>
             <span>Password:</span>
             <input
