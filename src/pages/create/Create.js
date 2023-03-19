@@ -1,7 +1,8 @@
 import React from "react";
 import "./Create.css";
 import Select from "react-select";
-
+import ReactGoogleAutocomplete from "react-google-autocomplete";
+const key = { apiKey: "AIzaSyBRDRNQTsTV-Y5fEdtPWFFKvvG3U5u9VNs" };
 const categories = [
   { value: "Rake", label: "Rake" },
   { value: "Shovel", label: "Shovel" },
@@ -11,6 +12,7 @@ const categories = [
   { value: "Mechanic Tools", label: "Mechanic Tools" },
   { value: "Strong", label: "Strong" },
   { value: "Trash Bags", label: "Trash Bags" },
+  { value: "Other", label: "Other" },
 ];
 export default function Create() {
   return (
@@ -34,8 +36,8 @@ export default function Create() {
             <Select options={categories} isMulti />
           </label>
           <label>
-            <span>Tools needed</span>
-            <input />
+            <span>City and State</span>
+            <ReactGoogleAutocomplete apiKey={key}></ReactGoogleAutocomplete>
           </label>
         </form>
       </div>
