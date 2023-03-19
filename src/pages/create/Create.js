@@ -1,6 +1,7 @@
 import React from "react";
 import "./Create.css";
 import Select from "react-select";
+// NOTE must "npm i react-google-autocomplete --save" before using
 import ReactGoogleAutocomplete from "react-google-autocomplete";
 const key = { apiKey: "AIzaSyBRDRNQTsTV-Y5fEdtPWFFKvvG3U5u9VNs" };
 const categories = [
@@ -37,7 +38,10 @@ export default function Create() {
           </label>
           <label>
             <span>City and State</span>
-            <ReactGoogleAutocomplete apiKey={key}></ReactGoogleAutocomplete>
+            <ReactGoogleAutocomplete
+              apiKey="AIzaSyBRDRNQTsTV-Y5fEdtPWFFKvvG3U5u9VNs"
+              onChange={(e) => console.log(e.target.value)}
+            ></ReactGoogleAutocomplete>
           </label>
         </form>
       </div>
