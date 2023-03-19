@@ -8,6 +8,7 @@ export default function Signup() {
   const { user } = useAuthContext();
   const navigate = useNavigate();
   const { error, isPending, signup } = useSignup();
+  const [signupError, setSignupError] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
@@ -35,14 +36,27 @@ export default function Signup() {
     console.log(profileImg);
   };
   const handleSubmit = (e) => {
+    setSignupError(null);
     e.preventDefault();
     if (password != passwordCheck) {
       return;
     }
     signup(email, password, displayName, profileImg);
-    if (user) {
+    if (error) {
+      setSignupError(error);
+    }
+    if (user && !error) {
+      resetForm();
       navigate("/");
     }
+  };
+  const resetForm = () => {
+    setDisplayName("");
+    setEmail("");
+    setPassword("");
+    setPasswordCheck("");
+    setProfileImgError(null);
+    setSignupError(null);
   };
   return (
     <div className="signup">
@@ -96,12 +110,18 @@ export default function Signup() {
           {password != passwordCheck && passwordCheck.length > 7 && (
             <p className="error">Does not match password</p>
           )}
+          {signupError && <div className="error">{signupError}</div>}
           <div className="btn-div">
-            <button className="reset" type="button">
+            <button className="reset" type="button" onClick={resetForm}>
               Reset
             </button>
-
-            <button className="signup-btn">Submit</button>
+            {!isPending ? (
+              <button className="signup-btn">Submit</button>
+            ) : (
+              <button className="signup-btn" disabled>
+                loading...
+              </button>
+            )}
           </div>
         </form>
       </div>
