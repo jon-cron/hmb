@@ -22,7 +22,7 @@ export default function Create() {
         <form>
           <label>
             <span>Posting Title</span>
-            <input />
+            <input type="text" />
           </label>
           <label>
             <span>Description</span>
@@ -37,12 +37,14 @@ export default function Create() {
             <Select options={categories} isMulti />
           </label>
           <label>
-            <span>City and State</span>
-            <ReactGoogleAutocomplete
+            <span>Location</span>
+            <input type="text" />
+            {/* <ReactGoogleAutocomplete
               apiKey="AIzaSyBRDRNQTsTV-Y5fEdtPWFFKvvG3U5u9VNs"
               onChange={(e) => console.log(e.target.value)}
-            ></ReactGoogleAutocomplete>
+            ></ReactGoogleAutocomplete> */}
           </label>
+          <button className="btn">Submit</button>
         </form>
       </div>
     </div>
