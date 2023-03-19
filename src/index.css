@@ -80,3 +80,8 @@ textarea {
   padding: 8px;
   margin: 10px 0;
 }
+.container {
+  min-width: inherit;
+  min-height: 100vh;
+  /* display: flex; */
+}
