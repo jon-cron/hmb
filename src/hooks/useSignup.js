@@ -30,7 +30,7 @@ export const useSignup = () => {
       console.log("img", img);
       //get download url for db
       // FIXME unable to retrieve downloadURL right here!
-      const imgUrl = await getDownloadURL(uploadPath.ref());
+      const imgUrl = await getDownloadURL(uploadRef);
       console.log("imgUrl", imgUrl);
       updateProfile(auth.currentUser, {
         displayName: displayName,
