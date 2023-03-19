@@ -20,6 +20,7 @@ export default function Navbar() {
       {user ? (
         <div>
           <NavLink to="/">Home</NavLink>
+          <NavLink to="/create">Post Job</NavLink>
         </div>
       ) : (
         <div />
@@ -37,7 +38,9 @@ export default function Navbar() {
             </>
           )}
           {user && (
-            <li>
+            <li className="logout">
+              <h4>Hello, {user.displayName.toUpperCase()}!</h4>
+              <img src={user.photoURL} className="profile-img" />
               <button onClick={handleClick} className="logout-btn">
                 Logout
               </button>
