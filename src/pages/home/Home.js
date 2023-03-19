@@ -8,7 +8,9 @@ export default function Home() {
   return (
     <div>
       <div>
+        <h2>{user.displayName}</h2>
         <img src={user.photoURL} height={50} width={50} />
+        <h3>{user.uid}</h3>
       </div>
     </div>
   );

@@ -29,7 +29,7 @@ export const useSignup = () => {
       const img = await uploadBytesResumable(uploadRef, profileImg);
       console.log("img", img);
       //get download url for db
-      // FIXME unable to retrieve downloadURL right here!
+      // NOTE all I had to do was use the upload path Reference!!!!!!!
       const imgUrl = await getDownloadURL(uploadRef);
       console.log("imgUrl", imgUrl);
       updateProfile(auth.currentUser, {
