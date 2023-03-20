@@ -19,17 +19,17 @@ export default function Create() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
-  const [capacity, setCapacity] = useState("");
+  const [totalWorkers, setTotalWorkers] = useState("");
   const [items, setItems] = useState([]);
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(title, description, location, capacity, items);
+    console.log(title, description, location, totalWorkers, items);
   };
   const resetForm = () => {
     setTitle("");
     setDescription("");
     setLocation("");
-    setCapacity("");
+    setTotalWorkers("");
     setItems([]);
   };
   return (
@@ -50,7 +50,7 @@ export default function Create() {
           <label>
             <span># of workers</span>
             <input
-              onChange={(e) => setCapacity(e.target.value)}
+              onChange={(e) => setTotalWorkers(e.target.value)}
               type="number"
             />
           </label>
