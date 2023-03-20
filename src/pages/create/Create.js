@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import "./Create.css";
 import Select from "react-select";
+import { useFirestore } from "../../hooks/useFirestore.js";
+import { Timestamp } from "firebase/firestore";
+import { useAuthContext } from "../../hooks/useAuthContext.js";
 // NOTE must "npm i react-google-autocomplete --save" before using
 // import ReactGoogleAutocomplete from "react-google-autocomplete";
 // const key = { apiKey: "AIzaSyBRDRNQTsTV-Y5fEdtPWFFKvvG3U5u9VNs" };
@@ -16,14 +19,35 @@ const categories = [
 ];
 export default function Create() {
   // NOTE posting data: title string, creator {}, description string, location string, workerTotal string, items [strings], offers [price, creator, job id, isAccepted bool]
+  const { user } = useAuthContext();
+  const { addDocument, response } = useFirestore("jobs");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
   const [totalWorkers, setTotalWorkers] = useState("");
   const [items, setItems] = useState([]);
-  const handleSubmit = (e) => {
+  const [hours, setHours] = useState("");
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(title, description, location, totalWorkers, items);
+    const createdAt = new Timestamp(new Date().toLocaleDateString());
+    const job = {
+      creator: {
+        id: user.uid,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+      },
+      title: title,
+      description: description,
+      location: location,
+      totalWorkers: totalWorkers,
+      items: items,
+      createdAt: createdAt,
+      hours: hours,
+      offers: [],
+    };
+    console.log(job);
+    await addDocument(job);
+    console.log(response);
   };
   const resetForm = () => {
     setTitle("");
@@ -31,6 +55,7 @@ export default function Create() {
     setLocation("");
     setTotalWorkers("");
     setItems([]);
+    setHours("");
   };
   return (
     <div className="container">
@@ -53,6 +78,10 @@ export default function Create() {
               onChange={(e) => setTotalWorkers(e.target.value)}
               type="number"
             />
+          </label>
+          <label>
+            <span>Estimated Time (hours)</span>
+            <input onChange={(e) => setHours(e.target.value)} type="number" />
           </label>
           <label>
             <span>Tools needed</span>
