@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import "./Create.css";
 import Select from "react-select";
 // NOTE must "npm i react-google-autocomplete --save" before using
-import ReactGoogleAutocomplete from "react-google-autocomplete";
-const key = { apiKey: "AIzaSyBRDRNQTsTV-Y5fEdtPWFFKvvG3U5u9VNs" };
+// import ReactGoogleAutocomplete from "react-google-autocomplete";
+// const key = { apiKey: "AIzaSyBRDRNQTsTV-Y5fEdtPWFFKvvG3U5u9VNs" };
 const categories = [
   { value: "Rake", label: "Rake" },
   { value: "Shovel", label: "Shovel" },
@@ -13,19 +13,29 @@ const categories = [
   { value: "Mechanic Tools", label: "Mechanic Tools" },
   { value: "Strong", label: "Strong" },
   { value: "Trash Bags", label: "Trash Bags" },
-  { value: "Other", label: "Other" },
 ];
 export default function Create() {
+  // NOTE posting data: title string, creator {}, description string, location string, workerTotal string, items [strings], offers [price, creator, job id, isAccepted bool]
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
   const [capacity, setCapacity] = useState("");
-  const [currentItem, setCurrentItem] = useState("");
   const [items, setItems] = useState([]);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(title, description, location, capacity, items);
+  };
+  const resetForm = () => {
+    setTitle("");
+    setDescription("");
+    setLocation("");
+    setCapacity("");
+    setItems([]);
+  };
   return (
     <div className="container">
       <div className="create-form-div">
-        <form>
+        <form onSubmit={handleSubmit}>
           <label>
             <span>Posting Title</span>
             <input onChange={(e) => setTitle(e.target.value)} type="text" />
@@ -49,12 +59,12 @@ export default function Create() {
             <Select
               options={categories}
               isMulti
-              onChange={(option) => setCurrentItem(option)}
+              onChange={(option) => setItems(option)}
             />
           </label>
           <label>
             <span>Location</span>
-            <input type="text" />
+            <input type="text" onChange={(e) => setLocation(e.target.value)} />
             {/* <ReactGoogleAutocomplete
               apiKey="AIzaSyBRDRNQTsTV-Y5fEdtPWFFKvvG3U5u9VNs"
               onChange={(e) => console.log(e.target.value)}
