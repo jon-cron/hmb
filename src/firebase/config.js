@@ -12,9 +12,9 @@ const firebaseConfig = {
   appId: "1:49270632310:web:ba59745a10f23e30fc5457",
 };
 
-initializeApp(firebaseConfig);
-
-const db = getFirestore();
-const auth = getAuth();
-const storage = getStorage();
+const app = initializeApp(firebaseConfig);
+// NOTE i set the initializeApp to a var because that is what the documentation did. Remove if this causes auth to fail
+const db = getFirestore(app);
+const auth = getAuth(app);
+const storage = getStorage(app);
 export { db, auth, storage };

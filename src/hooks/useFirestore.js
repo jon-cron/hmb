@@ -34,8 +34,7 @@ export const useFirestore = (desiredCollection) => {
   const addDocument = async (document) => {
     dispatch({ type: "IS_PENDING" });
     try {
-      // console.log(doc);
-      const addedDoc = await addDoc(jobRef, document);
+      const addedDoc = await setDoc(jobRef, document);
       console.log(addedDoc);
       dispatchIfNotCancelled({ type: "ADD_DOC", payload: addedDoc });
     } catch (error) {
