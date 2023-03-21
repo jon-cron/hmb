@@ -4,6 +4,7 @@ import Select from "react-select";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { useAuthContext } from "../../hooks/useAuthContext.js";
 import { db } from "../../firebase/config.js";
+import { useNavigate } from "react-router-dom";
 // NOTE must "npm i react-google-autocomplete --save" before using
 // import ReactGoogleAutocomplete from "react-google-autocomplete";
 // const key = { apiKey: "AIzaSyBRDRNQTsTV-Y5fEdtPWFFKvvG3U5u9VNs" };
@@ -21,6 +22,7 @@ export default function Create() {
   // NOTE posting data: title string, creator {}, description string, location string, workerTotal string, items [strings], offers [price, creator, job id, isAccepted bool]
   const { user } = useAuthContext();
   // const { addDocument, response } = useFirestore("jobs");
+  const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
@@ -50,6 +52,7 @@ export default function Create() {
     await addDoc(ref, { job });
     // console.log(response);
     resetForm();
+    navigate("/");
   };
   const resetForm = () => {
     setTitle("");
