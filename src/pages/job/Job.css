@@ -12,9 +12,9 @@
 }
 .job-page .job-section .job-info {
   border: 1px solid #777;
-  background-color: #ccc;
+  background-color: #28b886;
 }
-.job-page .job-section .job-info .job-description {
+.job-page .job-section .job-info .job-flex {
   display: flex;
   justify-content: start;
   align-items: start;
@@ -22,4 +22,33 @@
 }
 .job-page .job-section .job-info {
   padding: 20px;
+}
+.job-page .job-section .job-info .job-flex-evenly {
+  display: flex;
+  justify-content: space-evenly;
+}
+.job-page .job-section .job-info .job-flex ul {
+  display: flex;
+  justify-content: flex-end;
+}
+.job-page .job-section .job-info .job-flex li {
+  padding-left: 5px;
+}
+.job-page .job-section .job-info .job-flex-evenly div {
+  display: flex;
+  justify-content: space-evenly;
+  min-width: 44%;
+}
+.job-page .job-section .offer-section {
+  padding: 10px;
+}
+.job-page .job-section .offer-section .offer-form label {
+  display: flex;
+  justify-content: space-between;
+}
+.job-page .job-section .offer-section .offer-form span {
+  width: 25%;
+}
+.job-page .job-section .offer-section .offer-form .react-select {
+  width: 75%;
 }
