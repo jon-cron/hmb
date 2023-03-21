@@ -73,6 +73,15 @@ export default function Job() {
   const handleDecline = (offer) => {
     console.log("decline", offer);
   };
+  const handleCancel = async (id) => {
+    console.log(id);
+    const newOffers = document.offers.filter((o) => o.creator.id != id);
+    const jobRef = doc(db, "jobs", params.id);
+    await updateDoc(jobRef, {
+      offers: newOffers,
+    });
+    console.log(newOffers);
+  };
   return (
     <div className="container">
       <div className="job-page">
@@ -149,36 +158,53 @@ export default function Job() {
                   ))}
                 </div>
               )}
-              {!document.offers.find((o) => o.creator.id == user.uid) ? (
-                <div>
-                  <h2>Make your offer!</h2>
-                  <form className="offer-form" onSubmit={handleSubmit}>
-                    <label>
-                      <span>Amount</span>
-                      <Select
-                        className="react-select"
-                        options={offerAmounts}
-                        onChange={(option) => setAmount(option)}
-                        value={amount}
-                      />
-                    </label>
-                    <label>
-                      <span>Type</span>
-                      <Select
-                        className="react-select"
-                        options={offerType}
-                        onChange={(option) => setType(option)}
-                        value={type}
-                      />
-                    </label>
-                    <button className="btn">Submit</button>
-                  </form>
-                </div>
-              ) : (
-                <div>
-                  <h2>Your offer has been submitted!</h2>
-                </div>
-              )}
+              {!document.offers.find((o) => o.creator.id == user.uid) &&
+                document.job.creator.id != user.uid && (
+                  <div>
+                    <h2>Make your offer!</h2>
+                    <form className="offer-form" onSubmit={handleSubmit}>
+                      <label>
+                        <span>Amount</span>
+                        <Select
+                          className="react-select"
+                          options={offerAmounts}
+                          onChange={(option) => setAmount(option)}
+                          value={amount}
+                        />
+                      </label>
+                      <label>
+                        <span>Type</span>
+                        <Select
+                          className="react-select"
+                          options={offerType}
+                          onChange={(option) => setType(option)}
+                          value={type}
+                        />
+                      </label>
+                      <button className="btn">Submit</button>
+                    </form>
+                  </div>
+                )}
+              {document.offers.find((o) => o.creator.id == user.uid) &&
+                document.offers.find((o) => o.isAccepted == false) &&
+                document.job.creator.id != user.uid && (
+                  <div>
+                    <h2>Your offer has been submitted!</h2>
+                  </div>
+                )}
+              {document.offers.find((o) => o.creator.id == user.uid) &&
+                document.job.creator.id != user.uid &&
+                document.offers.find((o) => o.isAccepted == true) && (
+                  <div>
+                    <h2>Your offer has been accepted.</h2>
+                    <button
+                      className="btn"
+                      onClick={() => handleCancel(user.uid)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                )}
             </div>
           </div>
         )}
