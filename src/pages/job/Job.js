@@ -4,7 +4,7 @@ import { useDocument } from "../../hooks/useDocument.js";
 import { useAuthContext } from "../../hooks/useAuthContext.js";
 import Select from "react-select";
 import { useState } from "react";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase/config.js";
 
 const offerAmounts = [
@@ -114,7 +114,7 @@ export default function Job() {
                 ))}
             </div>
             <div className="offer-section">
-              {document.job.creator.id === user.uid ? (
+              {document.job.creator.id === user.uid && (
                 <div>
                   <h2>Offers</h2>
                   {document?.offers.map((o) => (
@@ -148,7 +148,8 @@ export default function Job() {
                     </div>
                   ))}
                 </div>
-              ) : (
+              )}
+              {!document.offers.includes(user.uid) ? (
                 <div>
                   <h2>Make your offer!</h2>
                   <form className="offer-form" onSubmit={handleSubmit}>
@@ -172,6 +173,10 @@ export default function Job() {
                     </label>
                     <button className="btn">Submit</button>
                   </form>
+                </div>
+              ) : (
+                <div>
+                  <h2>Your offer has been submitted!</h2>
                 </div>
               )}
             </div>
