@@ -1,0 +1,10 @@
+.jobs-list {
+  color: black;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-gap: 20px;
+}
+.jobs-list .job-card {
+  color: black;
+  text-decoration: none;
+}
