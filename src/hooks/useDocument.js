@@ -9,7 +9,7 @@ export const useDocument = (c, id) => {
     const unsub = async () => {
       const jobRef = doc(db, c, id);
       const jobSnap = await getDoc(jobRef);
-      setDocument(jobSnap.data().job);
+      setDocument(jobSnap.data());
     };
     return () => unsub();
   }, [c, id]);

@@ -2,17 +2,20 @@ import "./Job.css";
 import { useParams } from "react-router-dom";
 import { useDocument } from "../../hooks/useDocument.js";
 import { useAuthContext } from "../../hooks/useAuthContext.js";
-import ReactSelect from "react-select";
+import Select from "react-select";
 import { useState } from "react";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "../../firebase/config.js";
 
 const offerAmounts = [
-  { value: 6, label: 6 },
-  { value: 12, label: 12 },
-  { value: 18, label: 18 },
-  { value: 24, label: 24 },
-  { value: 30, label: 30 },
-  { value: 48, label: 48 },
-  { value: 72, label: 72 },
+  { value: "6", label: "6" },
+  { value: "12", label: "12" },
+  { value: "18", label: "18" },
+  { value: "24", label: "24" },
+  { value: "30", label: "30" },
+  { value: "48", label: "48" },
+  { value: "72", label: "72" },
+  { value: "96", label: "96" },
 ];
 const offerType = [
   { value: "Bud light", label: "Bud light" },
@@ -30,71 +33,94 @@ const offerType = [
 export default function Job() {
   const [amount, setAmount] = useState("");
   const [type, setType] = useState("");
-  // const [job, setJob] = useState(null);
   const params = useParams();
   const { user } = useAuthContext();
-  const { document: job } = useDocument("jobs", params.id);
-  console.log(job);
+  const { document } = useDocument("jobs", params.id);
+  console.log(document);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    //data for each offer, creator info (id, photoURL, displayName ), isAccepted: false, amount, type.
+    //NOTE i need to update the document through this function
+    const offer = {
+      creator: {
+        id: user.uid,
+        profileImg: user.photoURL,
+        displayName: user.displayName,
+      },
+      isAccepted: false,
+      amount: amount.value,
+      type: type.value,
+    };
+    console.log(offer);
+    const jobRef = doc(db, "jobs", params.id);
+    await updateDoc(jobRef, {
+      offers: [...document.offers, offer],
+    });
+  };
   return (
     <div className="container">
       <div className="job-page">
         <h2 className="job-title">Job Page</h2>
-        {job && (
+        {document?.job && (
           <div className="job-section">
             <div className="job-info">
               <span className="job-name">
-                <h3>{job.title}</h3>
+                <h3>{document.job.title}</h3>
               </span>
               <span className="job-flex">
                 <h4>Description:</h4>
-                {job.description}
+                {document.job.description}
               </span>
               <span className="job-flex-evenly">
                 <div>
                   <h4>Workers Needed:</h4>
-                  {job.totalWorkers}
+                  {document.job.totalWorkers}
                 </div>
                 <div>
                   <h4>Estimated Time:</h4>
-                  {job.hours}(hours)
+                  {document.job.hours}(hours)
                 </div>
               </span>
               <span className="job-flex">
                 <h4>Preferred Items:</h4>
                 <ul>
-                  {job.items.map((i) => (
+                  {document.job.items.map((i) => (
                     <li key={i.label}> {i.label} </li>
                   ))}
                 </ul>
               </span>
-              {job.offers.includes(user.uid) && (
+              {document.offers.includes(user.uid) && (
                 <span className="job-flex">
                   <h4>Location</h4>
-                  {job.location}
+                  {document.job.location}
                 </span>
               )}
             </div>
             <div className="offer-section">
-              {job.creator.id === user.uid ? (
+              {document.job.creator.id === user.uid ? (
                 <div>
                   <h2>Offers</h2>
                 </div>
               ) : (
                 <div>
                   <h2>Make your offer!</h2>
-                  <form className="offer-form">
+                  <form className="offer-form" onSubmit={handleSubmit}>
                     <label>
                       <span>Amount</span>
-                      <ReactSelect
+                      <Select
                         className="react-select"
                         options={offerAmounts}
+                        onChange={(option) => setAmount(option)}
+                        value={amount}
                       />
                     </label>
                     <label>
                       <span>Type</span>
-                      <ReactSelect
+                      <Select
                         className="react-select"
                         options={offerType}
+                        onChange={(option) => setType(option)}
+                        value={type}
                       />
                     </label>
                     <button className="btn">Submit</button>

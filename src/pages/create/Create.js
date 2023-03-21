@@ -47,7 +47,6 @@ export default function Create() {
       createdAt: createdAt,
       hours: hours,
       dueDate: dueDate,
-      offers: [],
     };
     // await addDocument(job);
     const ref = collection(db, "jobs");
