@@ -45,7 +45,6 @@ export default function Create() {
       hours: hours,
       offers: [],
     };
-    console.log(job);
     await addDocument(job);
     console.log(response);
   };
@@ -63,11 +62,16 @@ export default function Create() {
         <form onSubmit={handleSubmit}>
           <label>
             <span>Posting Title</span>
-            <input onChange={(e) => setTitle(e.target.value)} type="text" />
+            <input
+              onChange={(e) => setTitle(e.target.value)}
+              type="text"
+              required
+            />
           </label>
           <label>
             <span>Description</span>
             <textarea
+              required
               onChange={(e) => setDescription(e.target.value)}
               rows={10}
             ></textarea>
@@ -75,17 +79,23 @@ export default function Create() {
           <label>
             <span># of workers</span>
             <input
+              required
               onChange={(e) => setTotalWorkers(e.target.value)}
               type="number"
             />
           </label>
           <label>
             <span>Estimated Time (hours)</span>
-            <input onChange={(e) => setHours(e.target.value)} type="number" />
+            <input
+              required
+              onChange={(e) => setHours(e.target.value)}
+              type="number"
+            />
           </label>
           <label>
             <span>Tools needed</span>
             <Select
+              required
               options={categories}
               isMulti
               onChange={(option) => setItems(option)}
@@ -93,7 +103,11 @@ export default function Create() {
           </label>
           <label>
             <span>Location</span>
-            <input type="text" onChange={(e) => setLocation(e.target.value)} />
+            <input
+              required
+              type="text"
+              onChange={(e) => setLocation(e.target.value)}
+            />
             {/* <ReactGoogleAutocomplete
               apiKey="AIzaSyBRDRNQTsTV-Y5fEdtPWFFKvvG3U5u9VNs"
               onChange={(e) => console.log(e.target.value)}
