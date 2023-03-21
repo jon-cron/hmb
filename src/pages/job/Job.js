@@ -149,7 +149,7 @@ export default function Job() {
                   ))}
                 </div>
               )}
-              {!document.offers.includes(user.uid) ? (
+              {!document.offers.find((o) => o.creator.id == user.uid) ? (
                 <div>
                   <h2>Make your offer!</h2>
                   <form className="offer-form" onSubmit={handleSubmit}>
