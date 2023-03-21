@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./Create.css";
 import Select from "react-select";
-import { useFirestore } from "../../hooks/useFirestore.js";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { useAuthContext } from "../../hooks/useAuthContext.js";
 import { db } from "../../firebase/config.js";
