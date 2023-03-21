@@ -1,0 +1,25 @@
+.job-page .job-title {
+  text-align: start;
+  padding-left: 50px;
+  margin-bottom: 1em;
+}
+.job-page .job-section {
+  display: grid;
+  grid-template-columns: 2fr 2fr;
+}
+.job-page .job-section .job-info .job-name {
+  text-align: center;
+}
+.job-page .job-section .job-info {
+  border: 1px solid #777;
+  background-color: #ccc;
+}
+.job-page .job-section .job-info .job-description {
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  margin-top: 30px;
+}
+.job-page .job-section .job-info {
+  padding: 20px;
+}
