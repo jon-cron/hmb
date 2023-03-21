@@ -29,6 +29,7 @@ export default function Create() {
   const [totalWorkers, setTotalWorkers] = useState("");
   const [items, setItems] = useState([]);
   const [hours, setHours] = useState("");
+  const [dueDate, setDueDate] = useState("");
   const handleSubmit = async (e) => {
     e.preventDefault();
     const createdAt = Timestamp.fromDate(new Date());
@@ -45,6 +46,7 @@ export default function Create() {
       items: items,
       createdAt: createdAt,
       hours: hours,
+      dueDate: dueDate,
       offers: [],
     };
     // await addDocument(job);
@@ -83,6 +85,15 @@ export default function Create() {
               rows={10}
               value={description}
             ></textarea>
+          </label>
+          <label>
+            <span>Work Date</span>
+            <input
+              type="datetime-local"
+              required
+              onChange={(e) => setDueDate(e.target.value)}
+              value={dueDate}
+            />
           </label>
           <label>
             <span># of workers</span>

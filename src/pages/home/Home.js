@@ -9,6 +9,7 @@ export default function Home() {
   console.log(documents);
   return (
     <div className="container">
+      <h1 className="title">Job Postings</h1>
       <div>{documents && <JobsList jobs={documents} />}</div>
     </div>
   );
