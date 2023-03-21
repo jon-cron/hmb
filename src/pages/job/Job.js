@@ -58,11 +58,16 @@ export default function Job() {
       offers: [...document.offers, offer],
     });
   };
-  const handleAccept = (id) => {
-    console.log("accept", id);
+  const handleAccept = async (offer) => {
+    offer.isAccepted = true;
+    const jobRef = doc(db, "jobs", params.id);
+    await updateDoc(jobRef, {
+      offers: [...document.offers, offer],
+    });
+    console.log("accept", offer);
   };
-  const handleDecline = (id) => {
-    console.log("decline", id);
+  const handleDecline = (offer) => {
+    console.log("decline", offer);
   };
   return (
     <div className="container">
@@ -109,7 +114,10 @@ export default function Job() {
                 <div>
                   <h2>Offers</h2>
                   {document?.offers.map((o) => (
-                    <div key={o.creator.id} className="offer-card">
+                    <div
+                      key={o.creator.id}
+                      className={`offer-card ${o.isAccepted && "accepted"}`}
+                    >
                       <div className="flex">
                         <img src={o.creator.profileImg} />
                         <h5>{o.creator.displayName.toUpperCase()}</h5>
@@ -119,19 +127,20 @@ export default function Job() {
                           Will work for a {o.amount} pack of {o.type}.
                         </h6>
                       </div>
-                      <button
-                        className="btn"
-                        onClick={() => handleAccept(o.id)}
-                      >
-                        Accept
-                      </button>
-                      <button
-                        className="btn"
-                        // NOTE still not sure why but my onClicks were invoking on render; using an anonymous function like below stop the invoking on render
-                        onClick={() => handleDecline(o.id)}
-                      >
-                        Decline
-                      </button>
+                      {!o.isAccepted && (
+                        <button className="btn" onClick={() => handleAccept(o)}>
+                          Accept
+                        </button>
+                      )}
+                      {!o.isAccepted && (
+                        <button
+                          className="btn"
+                          // NOTE still not sure why but my onClicks were invoking on render; using an anonymous function like below stop the invoking on render
+                          onClick={() => handleDecline(o)}
+                        >
+                          Decline
+                        </button>
+                      )}
                     </div>
                   ))}
                 </div>
