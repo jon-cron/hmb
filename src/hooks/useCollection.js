@@ -15,7 +15,7 @@ export const useCollection = (c, _query) => {
     const unsub = onSnapshot(ref, (snapshot) => {
       let res = [];
       snapshot.docs.forEach((doc) => {
-        res.push({ ...doc.data(), id: doc.id });
+        res.push({ ...doc.data().job, id: doc.id });
       });
       setDocuments(res);
     });

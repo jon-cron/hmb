@@ -8,7 +8,7 @@ export default function JobsList({ jobs }) {
     <div className="jobs-list">
       {jobs.map((j) => (
         <Link to={`/jobs/${j.id}`} key={j.id} className="job-card">
-          {j.job.title}
+          {j.title}
         </Link>
       ))}
     </div>

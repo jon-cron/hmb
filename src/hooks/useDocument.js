@@ -1,4 +1,4 @@
-import { collection, doc, onSnapshot } from "firebase/firestore";
+import { collection, doc, onSnapshot, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../firebase/config.js";
 
@@ -7,11 +7,12 @@ export const useDocument = (c, id) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    let ref = collection(db, c);
-    const unsub = ref.onSnapshot(
+    let ref = doc(db, c, id);
+    const unsub = onSnapshot(
+      ref,
       (snapshot) => {
-        if (snapshot.data()) {
-          setDocument({ ...snapshot.data(), id: snapshot.id });
+        if (!snapshot.empty) {
+          setDocument({ ...snapshot.docs, id: snapshot.id });
           setError(null);
         } else {
           setError("No document by that id");
