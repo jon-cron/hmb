@@ -89,17 +89,23 @@ export default function Job() {
                   ))}
                 </ul>
               </span>
-              {document.offers.includes(user.uid) && (
-                <span className="job-flex">
-                  <h4>Location</h4>
-                  {document.job.location}
-                </span>
-              )}
+              {document.offers.includes(user.uid) ||
+                (document.job.creator.id === user.uid && (
+                  <span className="job-flex">
+                    <h4>Location:</h4>
+                    {document.job.location}
+                  </span>
+                ))}
             </div>
             <div className="offer-section">
               {document.job.creator.id === user.uid ? (
                 <div>
                   <h2>Offers</h2>
+                  {document.offers.map((o) => (
+                    <div key={o.creator.id} className="offer-card">
+                      {o.amount}
+                    </div>
+                  ))}
                 </div>
               ) : (
                 <div>
