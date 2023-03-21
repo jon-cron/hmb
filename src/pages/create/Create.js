@@ -50,7 +50,7 @@ export default function Create() {
     };
     // await addDocument(job);
     const ref = collection(db, "jobs");
-    await addDoc(ref, { job });
+    await addDoc(ref, { job, offers: [] });
     // console.log(response);
     resetForm();
     navigate("/");

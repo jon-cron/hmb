@@ -42,6 +42,7 @@ export default function Job() {
     //data for each offer, creator info (id, photoURL, displayName ), isAccepted: false, amount, type.
     //NOTE i need to update the document through this function
     const offer = {
+      id: Math.floor(Math.random() * 1000000),
       creator: {
         id: user.uid,
         profileImg: user.photoURL,
@@ -56,6 +57,12 @@ export default function Job() {
     await updateDoc(jobRef, {
       offers: [...document.offers, offer],
     });
+  };
+  const handleAccept = (id) => {
+    console.log("accept", id);
+  };
+  const handleDecline = (id) => {
+    console.log("decline", id);
   };
   return (
     <div className="container">
@@ -89,7 +96,7 @@ export default function Job() {
                   ))}
                 </ul>
               </span>
-              {document.offers.includes(user.uid) ||
+              {(document.offers && document.offers.includes(user.uid)) ||
                 (document.job.creator.id === user.uid && (
                   <span className="job-flex">
                     <h4>Location:</h4>
@@ -101,9 +108,30 @@ export default function Job() {
               {document.job.creator.id === user.uid ? (
                 <div>
                   <h2>Offers</h2>
-                  {document.offers.map((o) => (
+                  {document?.offers.map((o) => (
                     <div key={o.creator.id} className="offer-card">
-                      {o.amount}
+                      <div className="flex">
+                        <img src={o.creator.profileImg} />
+                        <h5>{o.creator.displayName.toUpperCase()}</h5>
+                      </div>
+                      <div className="flex">
+                        <h6>
+                          Will work for a {o.amount} pack of {o.type}.
+                        </h6>
+                      </div>
+                      <button
+                        className="btn"
+                        onClick={() => handleAccept(o.id)}
+                      >
+                        Accept
+                      </button>
+                      <button
+                        className="btn"
+                        // NOTE still not sure why but my onClicks were invoking on render; using an anonymous function like below stop the invoking on render
+                        onClick={() => handleDecline(o.id)}
+                      >
+                        Decline
+                      </button>
                     </div>
                   ))}
                 </div>
