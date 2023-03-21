@@ -4,7 +4,7 @@ import { useDocument } from "../../hooks/useDocument.js";
 import { useAuthContext } from "../../hooks/useAuthContext.js";
 import Select from "react-select";
 import { useState } from "react";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase/config.js";
 
 const offerAmounts = [
@@ -59,12 +59,16 @@ export default function Job() {
     });
   };
   const handleAccept = async (offer) => {
-    offer.isAccepted = true;
     const jobRef = doc(db, "jobs", params.id);
+    // const newJob = await getDoc(jobRef);
+    // newJob.data().offers;
+    const index = document.offers.findIndex((d) => d.id == offer.id);
+    document.offers[index].isAccepted = true;
+    console.log(document.offers);
     await updateDoc(jobRef, {
-      offers: [...document.offers, offer],
+      offers: document.offers,
     });
-    console.log("accept", offer);
+    // console.log("accept", offer);
   };
   const handleDecline = (offer) => {
     console.log("decline", offer);

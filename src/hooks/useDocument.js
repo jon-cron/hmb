@@ -1,4 +1,4 @@
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../firebase/config.js";
 
@@ -8,8 +8,9 @@ export const useDocument = (c, id) => {
   useEffect(() => {
     const unsub = async () => {
       const jobRef = doc(db, c, id);
-      const jobSnap = await getDoc(jobRef);
-      setDocument(jobSnap.data());
+      const unsub = onSnapshot(jobRef, (snapshot) => {
+        setDocument(snapshot.data());
+      });
     };
     return () => unsub();
   }, [c, id]);
