@@ -1,6 +1,6 @@
 import { db } from "../firebase/config.js";
 import { useReducer, useEffect, useState } from "react";
-import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 let initialState = {
   document: null,
   isPending: false,
@@ -25,7 +25,7 @@ const firestoreReducer = (state, action) => {
 export const useFirestore = (desiredCollection) => {
   const [response, dispatch] = useReducer(firestoreReducer, initialState);
   const [isCancelled, setIsCancelled] = useState(false);
-  const jobRef = doc(collection(db, desiredCollection));
+  const ref = collection(db, desiredCollection);
   const dispatchIfNotCancelled = (action) => {
     if (!isCancelled) {
       dispatch(action);
@@ -34,8 +34,8 @@ export const useFirestore = (desiredCollection) => {
   const addDocument = async (document) => {
     dispatch({ type: "IS_PENDING" });
     try {
-      const addedDoc = await setDoc(jobRef, document);
-      console.log(addedDoc);
+      // const addedDoc = await addDoc(ref, { ...document });
+      const addedDoc = await addDoc(ref, { document });
       dispatchIfNotCancelled({ type: "ADD_DOC", payload: addedDoc });
     } catch (error) {
       dispatchIfNotCancelled({ type: "ERROR", payload: error.message });
