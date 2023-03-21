@@ -15,6 +15,7 @@ import Signup from "./pages/signup/Signup.js";
 import Login from "./pages/login/Login.js";
 import Navbar from "./components/navbar/Navbar.js";
 import Create from "./pages/create/Create.js";
+import Job from "./pages/job/Job.js";
 function App() {
   const { authIsReady, user } = useAuthContext();
   return (
@@ -26,6 +27,10 @@ function App() {
             <Route
               path="/"
               element={user ? <Home /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/jobs/:id"
+              element={user ? <Job /> : <Navigate to="/login" />}
             />
             <Route
               path="/login"
