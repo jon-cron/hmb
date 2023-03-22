@@ -142,15 +142,14 @@ export default function Job() {
                           Accept
                         </button>
                       )}
-                      {!o.isAccepted && (
-                        <button
-                          className="btn"
-                          // NOTE still not sure why but my onClicks were invoking on render; using an anonymous function like below stop the invoking on render
-                          onClick={() => handleDecline(o)}
-                        >
-                          Decline
-                        </button>
-                      )}
+
+                      <button
+                        className="btn"
+                        // NOTE still not sure why but my onClicks were invoking on render; using an anonymous function like below stop the invoking on render
+                        onClick={() => handleDecline(o)}
+                      >
+                        Remove
+                      </button>
                     </div>
                   ))}
                 </div>
