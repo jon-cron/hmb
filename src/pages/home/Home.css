@@ -3,6 +3,7 @@
 }
 .project-filter nav {
   display: flex;
+  justify-content: center;
   padding: 10px;
   background-color: #fff;
   border-radius: 4px;
