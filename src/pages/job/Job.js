@@ -84,12 +84,27 @@ export default function Job() {
     });
   };
   const handleCancel = async (id) => {
+    const found = document.offers.find((o) => o.creator.id == id);
+    console.log(found.isAccepted);
     document.offers = document.offers.filter((o) => o.creator.id != id);
     const jobRef = doc(db, "jobs", params.id);
-    await updateDoc(jobRef, {
-      offers: document.offers,
-      job: { ...document.job, totalWorkers: document.job.totalWorkers + 1 },
-    });
+    if (found.isAccepted == true) {
+      await updateDoc(jobRef, {
+        offers: document.offers,
+        job: {
+          ...document.job,
+          totalWorkers: document.job.totalWorkers + 1,
+        },
+      });
+    } else {
+      await updateDoc(jobRef, {
+        offers: document.offers,
+        job: {
+          ...document.job,
+          totalWorkers: document.job.totalWorkers,
+        },
+      });
+    }
   };
   // NOTE I was able to consolidate the functionality of toggling an offers isAccepted bool within the toggle function above making this function redundant
   // const handleRemove = async (offer) => {
