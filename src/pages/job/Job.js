@@ -1,10 +1,10 @@
 import "./Job.css";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDocument } from "../../hooks/useDocument.js";
 import { useAuthContext } from "../../hooks/useAuthContext.js";
 import Select from "react-select";
 import { useState } from "react";
-import { doc, updateDoc } from "firebase/firestore";
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "../../firebase/config.js";
 
 const offerAmounts = [
@@ -31,6 +31,7 @@ const offerType = [
   { value: "Samuel Adams", label: "Samuel Adams" },
 ];
 export default function Job() {
+  const navigate = useNavigate();
   const [amount, setAmount] = useState("");
   const [type, setType] = useState("");
   const [itemsProvided, setItemsProvided] = useState([]);
@@ -106,6 +107,11 @@ export default function Job() {
       });
     }
   };
+  const handleDeleteJob = async () => {
+    const jobRef = doc(db, "jobs", params.id);
+    await deleteDoc(jobRef);
+    navigate("/");
+  };
   // NOTE I was able to consolidate the functionality of toggling an offers isAccepted bool within the toggle function above making this function redundant
   // const handleRemove = async (offer) => {
   //   document.offers = document.offers.filter((o) => o.id != offer.id);
@@ -162,6 +168,14 @@ export default function Job() {
                     {document.job.location}
                   </span>
                 ))}
+              {document.job.creator.id === user.uid && (
+                <button
+                  className="delete-job-btn btn"
+                  onClick={() => handleDeleteJob()}
+                >
+                  Remove Job
+                </button>
+              )}
             </div>
             <div className="offer-section">
               {/* SECTION job poster */}
