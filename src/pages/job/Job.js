@@ -33,6 +33,7 @@ const offerType = [
 export default function Job() {
   const [amount, setAmount] = useState("");
   const [type, setType] = useState("");
+  const [items, setItems] = useState([]);
   const params = useParams();
   const { user } = useAuthContext();
   const { document } = useDocument("jobs", params.id);
@@ -51,12 +52,14 @@ export default function Job() {
       isAccepted: false,
       amount: amount.value,
       type: type.value,
+      items: items.value,
     };
     const jobRef = doc(db, "jobs", params.id);
     await updateDoc(jobRef, {
       offers: [...document.offers, offer],
     });
   };
+  // FIXME I need to change the number of workers needed based on the amount of offers that have been accepted. I also need to remove the submit offer form if workers needed is 0
   const toggleIsAccepted = async (offer) => {
     const jobRef = doc(db, "jobs", params.id);
     const index = document.offers.findIndex((d) => d.id == offer.id);
@@ -195,6 +198,16 @@ export default function Job() {
                           options={offerType}
                           onChange={(option) => setType(option)}
                           value={type}
+                        />
+                      </label>
+                      <label>
+                        <span>Tools I Can Provide</span>
+                        <Select
+                          className="react-select"
+                          options={document.job.items}
+                          onChange={(option) => setItems(option)}
+                          value={items}
+                          isMulti
                         />
                       </label>
                       <button className="btn">Submit</button>
