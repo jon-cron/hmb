@@ -33,7 +33,7 @@ const offerType = [
 export default function Job() {
   const [amount, setAmount] = useState("");
   const [type, setType] = useState("");
-  const [items, setItems] = useState([]);
+  const [itemsProvided, setItemsProvided] = useState([]);
   const params = useParams();
   const { user } = useAuthContext();
   const { document } = useDocument("jobs", params.id);
@@ -52,12 +52,16 @@ export default function Job() {
       isAccepted: false,
       amount: amount.value,
       type: type.value,
-      items: items.value,
+      items: itemsProvided,
     };
     const jobRef = doc(db, "jobs", params.id);
-    await updateDoc(jobRef, {
-      offers: [...document.offers, offer],
-    });
+    try {
+      await updateDoc(jobRef, {
+        offers: [...document.offers, offer],
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
   };
   // FIXME I need to change the number of workers needed based on the amount of offers that have been accepted. I also need to remove the submit offer form if workers needed is 0
   const toggleIsAccepted = async (offer) => {
@@ -126,6 +130,7 @@ export default function Job() {
                 ))}
             </div>
             <div className="offer-section">
+              {/* SECTION job poster */}
               {document.job.creator.id === user.uid && (
                 <div>
                   <h2>Offers</h2>
@@ -139,45 +144,55 @@ export default function Job() {
                       key={o.creator.id}
                       className={`offer-card ${o.isAccepted && "accepted"}`}
                     >
-                      <div className="flex">
-                        <img src={o.creator.profileImg} />
-                        <h5>{o.creator.displayName.toUpperCase()}</h5>
-                      </div>
-                      <div className="flex">
-                        <h6>
-                          Will work for a {o.amount} pack of {o.type}.
-                        </h6>
-                      </div>
-                      {!o.isAccepted && (
-                        <button
-                          className="btn"
-                          onClick={() => toggleIsAccepted(o)}
-                        >
-                          Accept
-                        </button>
-                      )}
+                      <div className="row-1">
+                        <div className="flex">
+                          <img src={o.creator.profileImg} />
+                          <h5>{o.creator.displayName.toUpperCase()}</h5>
+                        </div>
+                        <div className="flex">
+                          <h6>
+                            Will work for a {o.amount} pack of {o.type}.
+                          </h6>
+                        </div>
+                        {!o.isAccepted && (
+                          <button
+                            className="btn"
+                            onClick={() => toggleIsAccepted(o)}
+                          >
+                            Accept
+                          </button>
+                        )}
 
-                      {o.isAccepted && (
+                        {o.isAccepted && (
+                          <button
+                            className="btn"
+                            // NOTE still not sure why but my onClicks were invoking on render; using an anonymous function like below stop the invoking on render
+                            onClick={() => toggleIsAccepted(o)}
+                          >
+                            Decline
+                          </button>
+                        )}
                         <button
                           className="btn"
                           // NOTE still not sure why but my onClicks were invoking on render; using an anonymous function like below stop the invoking on render
-                          onClick={() => toggleIsAccepted(o)}
+                          onClick={() => handleCancel(o.creator.id)}
                         >
-                          Decline
+                          Remove
                         </button>
-                      )}
-                      <button
-                        className="btn"
-                        // NOTE still not sure why but my onClicks were invoking on render; using an anonymous function like below stop the invoking on render
-                        onClick={() => handleCancel(o.creator.id)}
-                      >
-                        Remove
-                      </button>
+                      </div>
+                      {/* NOTE next row */}
+                      <div className="row-1">
+                        <h5>Tools offered:</h5>
+                        {o.items.map((i) => (
+                          <h6 key={i.value}>{i.label}</h6>
+                        ))}
+                      </div>
                     </div>
                   ))}
                 </div>
               )}
               {!document.offers.find((o) => o.creator.id == user.uid) &&
+                // SECTION job offerer
                 document.job.creator.id != user.uid && (
                   <div>
                     <h2>Make your offer!</h2>
@@ -205,8 +220,8 @@ export default function Job() {
                         <Select
                           className="react-select"
                           options={document.job.items}
-                          onChange={(option) => setItems(option)}
-                          value={items}
+                          onChange={(option) => setItemsProvided(option)}
+                          value={itemsProvided}
                           isMulti
                         />
                       </label>
