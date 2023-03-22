@@ -63,19 +63,24 @@ export default function Job() {
       console.log(error.message);
     }
   };
-  // FIXME I need to change the number of workers needed based on the amount of offers that have been accepted. I also need to remove the submit offer form if workers needed is 0
+  // FIXME I also need to remove the submit offer form if workers needed is 0
   const toggleIsAccepted = async (offer) => {
     const jobRef = doc(db, "jobs", params.id);
     const index = document.offers.findIndex((d) => d.id == offer.id);
     const bool = document.offers[index].isAccepted;
-    console.log(bool);
     document.offers[index].isAccepted = !bool;
-    const count = document.offers.filter((o) => o.isAccepted == true);
-    const newWorkerCount = document.job.totalWorkers - count.length;
-    console.log(newWorkerCount);
+    let count = document.job.totalWorkers;
+
+    if (bool) {
+      count++;
+    } else {
+      count--;
+    }
+    console.log(count);
     await updateDoc(jobRef, {
       offers: document.offers,
-      totalWorkers: newWorkerCount,
+      // NOTE must spread the entire object to alter an aspect of it. This is an example of altered a nested object
+      job: { ...document.job, totalWorkers: count },
     });
   };
   const handleCancel = async (id) => {
@@ -83,6 +88,7 @@ export default function Job() {
     const jobRef = doc(db, "jobs", params.id);
     await updateDoc(jobRef, {
       offers: document.offers,
+      job: { ...document.job, totalWorkers: document.job.totalWorkers + 1 },
     });
   };
   // NOTE I was able to consolidate the functionality of toggling an offers isAccepted bool within the toggle function above making this function redundant
@@ -209,37 +215,41 @@ export default function Job() {
                 document.job.creator.id != user.uid && (
                   <div>
                     <h2>Make your offer!</h2>
-                    <form className="offer-form" onSubmit={handleSubmit}>
-                      <label>
-                        <span>Amount</span>
-                        <Select
-                          className="react-select"
-                          options={offerAmounts}
-                          onChange={(option) => setAmount(option)}
-                          value={amount}
-                        />
-                      </label>
-                      <label>
-                        <span>Type</span>
-                        <Select
-                          className="react-select"
-                          options={offerType}
-                          onChange={(option) => setType(option)}
-                          value={type}
-                        />
-                      </label>
-                      <label>
-                        <span>Tools I Can Provide</span>
-                        <Select
-                          className="react-select"
-                          options={document.job.items}
-                          onChange={(option) => setItemsProvided(option)}
-                          value={itemsProvided}
-                          isMulti
-                        />
-                      </label>
-                      <button className="btn">Submit</button>
-                    </form>
+                    {document.job.totalWorkers > 0 ? (
+                      <form className="offer-form" onSubmit={handleSubmit}>
+                        <label>
+                          <span>Amount</span>
+                          <Select
+                            className="react-select"
+                            options={offerAmounts}
+                            onChange={(option) => setAmount(option)}
+                            value={amount}
+                          />
+                        </label>
+                        <label>
+                          <span>Type</span>
+                          <Select
+                            className="react-select"
+                            options={offerType}
+                            onChange={(option) => setType(option)}
+                            value={type}
+                          />
+                        </label>
+                        <label>
+                          <span>Tools I Can Provide</span>
+                          <Select
+                            className="react-select"
+                            options={document.job.items}
+                            onChange={(option) => setItemsProvided(option)}
+                            value={itemsProvided}
+                            isMulti
+                          />
+                        </label>
+                        <button className="btn">Submit</button>
+                      </form>
+                    ) : (
+                      <div>There are no more spots for this job</div>
+                    )}
                   </div>
                 )}
               {document.offers.find((o) => o.creator.id == user.uid) &&
