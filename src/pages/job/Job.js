@@ -52,7 +52,6 @@ export default function Job() {
       amount: amount.value,
       type: type.value,
     };
-    console.log(offer);
     const jobRef = doc(db, "jobs", params.id);
     await updateDoc(jobRef, {
       offers: [...document.offers, offer],
@@ -60,27 +59,25 @@ export default function Job() {
   };
   const handleAccept = async (offer) => {
     const jobRef = doc(db, "jobs", params.id);
-    // const newJob = await getDoc(jobRef);
-    // newJob.data().offers;
     const index = document.offers.findIndex((d) => d.id == offer.id);
     document.offers[index].isAccepted = true;
-    console.log(document.offers);
     await updateDoc(jobRef, {
       offers: document.offers,
     });
-    // console.log("accept", offer);
   };
-  const handleDecline = (offer) => {
-    console.log("decline", offer);
-  };
-  const handleCancel = async (id) => {
-    console.log(id);
-    const newOffers = document.offers.filter((o) => o.creator.id != id);
+  const handleDecline = async (offer) => {
+    document.offers = document.offers.filter((o) => o.id != offer.id);
     const jobRef = doc(db, "jobs", params.id);
     await updateDoc(jobRef, {
-      offers: newOffers,
+      offers: document.offers,
     });
-    console.log(newOffers);
+  };
+  const handleCancel = async (id) => {
+    document.offers = document.offers.filter((o) => o.creator.id != id);
+    const jobRef = doc(db, "jobs", params.id);
+    await updateDoc(jobRef, {
+      offers: document.offers,
+    });
   };
   return (
     <div className="container">
