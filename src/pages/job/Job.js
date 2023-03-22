@@ -67,13 +67,6 @@ export default function Job() {
       offers: document.offers,
     });
   };
-  const handleRemove = async (offer) => {
-    document.offers = document.offers.filter((o) => o.id != offer.id);
-    const jobRef = doc(db, "jobs", params.id);
-    await updateDoc(jobRef, {
-      offers: document.offers,
-    });
-  };
   const handleCancel = async (id) => {
     document.offers = document.offers.filter((o) => o.creator.id != id);
     const jobRef = doc(db, "jobs", params.id);
@@ -81,6 +74,14 @@ export default function Job() {
       offers: document.offers,
     });
   };
+  // NOTE I was able to consolidate the functionality of toggling an offers isAccepted bool within the toggle function above making this function redundant
+  // const handleRemove = async (offer) => {
+  //   document.offers = document.offers.filter((o) => o.id != offer.id);
+  //   const jobRef = doc(db, "jobs", params.id);
+  //   await updateDoc(jobRef, {
+  //     offers: document.offers,
+  //   });
+  // };
   return (
     <div className="container">
       <div className="job-page">
@@ -125,6 +126,11 @@ export default function Job() {
               {document.job.creator.id === user.uid && (
                 <div>
                   <h2>Offers</h2>
+                  {document.offers.length < 1 && (
+                    <div>
+                      <h3>No offers yet...</h3>
+                    </div>
+                  )}
                   {document?.offers.map((o) => (
                     <div
                       key={o.creator.id}
@@ -200,6 +206,12 @@ export default function Job() {
                 document.job.creator.id != user.uid && (
                   <div>
                     <h2>Your offer has been submitted!</h2>
+                    <button
+                      className="btn"
+                      onClick={() => handleCancel(user.uid)}
+                    >
+                      Remove Offer
+                    </button>
                   </div>
                 )}
               {document.offers.find((o) => o.creator.id == user.uid) &&
@@ -211,7 +223,7 @@ export default function Job() {
                       className="btn"
                       onClick={() => handleCancel(user.uid)}
                     >
-                      Cancel
+                      Remove Offer
                     </button>
                   </div>
                 )}
