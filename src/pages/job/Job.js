@@ -57,15 +57,17 @@ export default function Job() {
       offers: [...document.offers, offer],
     });
   };
-  const handleAccept = async (offer) => {
+  const toggleIsAccepted = async (offer) => {
     const jobRef = doc(db, "jobs", params.id);
     const index = document.offers.findIndex((d) => d.id == offer.id);
-    document.offers[index].isAccepted = true;
+    const bool = document.offers[index].isAccepted;
+    console.log(bool);
+    document.offers[index].isAccepted = !bool;
     await updateDoc(jobRef, {
       offers: document.offers,
     });
   };
-  const handleDecline = async (offer) => {
+  const handleRemove = async (offer) => {
     document.offers = document.offers.filter((o) => o.id != offer.id);
     const jobRef = doc(db, "jobs", params.id);
     await updateDoc(jobRef, {
@@ -138,15 +140,27 @@ export default function Job() {
                         </h6>
                       </div>
                       {!o.isAccepted && (
-                        <button className="btn" onClick={() => handleAccept(o)}>
+                        <button
+                          className="btn"
+                          onClick={() => toggleIsAccepted(o)}
+                        >
                           Accept
                         </button>
                       )}
 
+                      {o.isAccepted && (
+                        <button
+                          className="btn"
+                          // NOTE still not sure why but my onClicks were invoking on render; using an anonymous function like below stop the invoking on render
+                          onClick={() => toggleIsAccepted(o)}
+                        >
+                          Decline
+                        </button>
+                      )}
                       <button
                         className="btn"
                         // NOTE still not sure why but my onClicks were invoking on render; using an anonymous function like below stop the invoking on render
-                        onClick={() => handleDecline(o)}
+                        onClick={() => handleCancel(o.creator.id)}
                       >
                         Remove
                       </button>
