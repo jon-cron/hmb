@@ -70,8 +70,12 @@ export default function Job() {
     const bool = document.offers[index].isAccepted;
     console.log(bool);
     document.offers[index].isAccepted = !bool;
+    const count = document.offers.filter((o) => o.isAccepted == true);
+    const newWorkerCount = document.job.totalWorkers - count.length;
+    console.log(newWorkerCount);
     await updateDoc(jobRef, {
       offers: document.offers,
+      totalWorkers: newWorkerCount,
     });
   };
   const handleCancel = async (id) => {
@@ -104,10 +108,19 @@ export default function Job() {
                 {document.job.description}
               </span>
               <span className="job-flex-evenly">
-                <div>
-                  <h4>Workers Needed:</h4>
-                  {document.job.totalWorkers}
-                </div>
+                {document.totalWorkers ? (
+                  <div>
+                    <h4>Workers Needed:</h4>
+
+                    {document.totalWorkers}
+                  </div>
+                ) : (
+                  <div>
+                    <h4>Workers Needed:</h4>
+
+                    {document.job.totalWorkers}
+                  </div>
+                )}
                 <div>
                   <h4>Estimated Time:</h4>
                   {document.job.hours}(hours)
