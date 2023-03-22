@@ -270,6 +270,10 @@ export default function Job() {
                 document.offers.find((o) => o.isAccepted == true) && (
                   <div>
                     <h2>Your offer has been accepted.</h2>
+                    <h5>
+                      Please arrive at {document.job.location} at{" "}
+                      {document.job.dueDate}
+                    </h5>
                     <button
                       className="btn"
                       onClick={() => handleCancel(user.uid)}
