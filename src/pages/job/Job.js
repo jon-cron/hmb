@@ -124,7 +124,7 @@ export default function Job() {
     <div className="container">
       <div className="job-page">
         <h2 className="job-title">Job Page</h2>
-        {document?.job && (
+        {document.job && (
           <div className="job-section">
             <div className="job-info">
               <span className="job-name">
